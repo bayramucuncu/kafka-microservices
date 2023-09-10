@@ -23,4 +23,12 @@ docker exec -it [container id] /bin/bash
 - Get message from console after from beginning
   - kafka-console-consumer --bootstrap-server kafka-1:29092 --topic orders --from-beginning
 
-#
+# Running Microservices
+1. Run docker compose command in terminal
+    - docker-compose up
+2. Run following apps:
+   - order_process.py
+   - inventory_process.py
+   - payment_process.py
+   - delivery_process
+   - report_process.py
