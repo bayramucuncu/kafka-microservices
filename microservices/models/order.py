@@ -5,6 +5,7 @@ from enum import Enum
 
 
 class OrderStatus(str, Enum):
+    Accepted = "accepted"
     Submitted = "submitted"
     Cancelled = "cancelled"
     Validated = "validated"

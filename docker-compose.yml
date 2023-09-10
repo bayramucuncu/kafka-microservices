@@ -64,15 +64,6 @@ services:
         condition: service_healthy
     command: "bash -c 'echo creating topics && \
       kafka-topics --bootstrap-server kafka-1:29092 --create --topic submitted-orders && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic orders-validation && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic supply-orders && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic cancelled-orders && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic shipped-orders && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic email-notifications && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic sms-notifications && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic orders.order-created-event && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic orders.order-accepted-event && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic billing.order-purchased-event && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic notification.orders-email && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic notification.orders-sms && \
-      kafka-topics --bootstrap-server kafka-1:29092 --create --topic shipping.order-shipped-event'"
+      kafka-topics --bootstrap-server kafka-1:29092 --create --topic validated-orders && \
+      kafka-topics --bootstrap-server kafka-1:29092 --create --topic accepted-orders && \
+      kafka-topics --bootstrap-server kafka-1:29092 --create --topic orders-reports'"
