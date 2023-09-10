@@ -1,4 +1,3 @@
-import datetime
 import json
 
 from microservices.infrastructure.kafka_consumer import KafkaConsumer
@@ -6,7 +5,7 @@ from microservices.infrastructure.kafka_producer import KafkaProducer
 from microservices.ordering.report_creator import report_order
 from microservices.models.order import OrderStatus
 
-consumer = KafkaConsumer("cg-accepted-orders_1")
+consumer = KafkaConsumer("cg_accepted_orders_1")
 producer = KafkaProducer("delivery_process")
 
 

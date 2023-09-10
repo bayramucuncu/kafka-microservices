@@ -1,4 +1,3 @@
-import datetime
 import json
 
 from microservices.infrastructure.kafka_consumer import KafkaConsumer
