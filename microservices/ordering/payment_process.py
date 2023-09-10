@@ -6,7 +6,7 @@ from microservices.models.order import OrderStatus
 
 consumer_conf = {
     'bootstrap.servers': "localhost:9092,localhost:9093",
-    'group.id': "consume-orders-validation-for-payment",
+    'group.id': "consume-validated-orders-for-payment",
     'auto.offset.reset': 'smallest'
 }
 consumer = KafkaConsumer(consumer_conf)
@@ -45,6 +45,7 @@ def msg_process(msg):
     # Checking from database.
     if order["status"] == OrderStatus.Validated.value:
         is_paid = pay_order(order)
+        order["status"] = OrderStatus.Paid.value
         if is_paid:
             accept_order(order)
         else:
