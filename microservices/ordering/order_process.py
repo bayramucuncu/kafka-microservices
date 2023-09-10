@@ -11,17 +11,20 @@ from microservices.models.order import Order
 producer = KafkaProducer("order_process")
 
 
+def report_order(order, message):
+    data = json.dumps({
+        "order_id": order["order_id"],
+        "report_ts": str(datetime.datetime.now()),
+        "message": message
+    })
+    producer.produce("submitted-orders", key=o.order_id, data=data)
+
+
 def producer_acked(err: Any, msg: Any):
     if err is not None:
         print("Failed to deliver message: %s: %s" % (str(msg), str(err)))
     else:
-        order = json.loads(msg.value().decode("utf-8"))
-        data = json.dumps({
-            "order_id": order["order_id"],
-            "report_ts": str(datetime.datetime.now()),
-            "message": "Order submitted"
-        })
-        producer.produce("submitted-orders", key=o.order_id, data=data)
+        report_order(json.loads(msg.value().decode("utf-8")), "Order submitted")
         print("Message produced: %s" % (str(msg.value().decode("utf-8"))))
 
 
