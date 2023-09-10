@@ -27,7 +27,7 @@ class KafkaProducer:
         else:
             print("Message produced: %s" % (str(msg.value().decode("utf-8"))))
 
-    def produce(self, topic, key, data, callback=acked):
+    def produce(self, topic, key, data, callback=None):
         self.producer.produce(topic=topic, key=key, value=data, callback=callback)
 
     def poll(self, timeout: float = None):

@@ -1,3 +1,4 @@
+import datetime
 import json
 
 from microservices.infrastructure.kafka_consumer import KafkaConsumer
@@ -5,7 +6,17 @@ from microservices.infrastructure.kafka_producer import KafkaProducer
 from microservices.models.order import OrderStatus
 
 consumer = KafkaConsumer("cg-accepted-orders_1")
-producer = KafkaProducer("delivery_process")
+order_producer = KafkaProducer("delivery_process")
+report_producer = KafkaProducer("report_process")
+
+
+def report_order(order, message):
+    data = json.dumps({
+        "order_id": order["order_id"],
+        "report_ts": str(datetime.datetime.now()),
+        "message": message
+    })
+    report_producer.produce("orders-reports", key=order["order_id"], data=data)
 
 
 def start_order_delivery(order):

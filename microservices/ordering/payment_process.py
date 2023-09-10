@@ -1,11 +1,22 @@
+import datetime
 import json
 
 from microservices.infrastructure.kafka_consumer import KafkaConsumer
 from microservices.infrastructure.kafka_producer import KafkaProducer
 from microservices.models.order import OrderStatus
 
-consumer = KafkaConsumer("cg_validated_orders_1")
-producer = KafkaProducer("payment_process")
+order_consumer = KafkaConsumer("cg_validated_orders_1")
+order_producer = KafkaProducer("payment_process")
+report_producer = KafkaProducer("report_process")
+
+
+def report_order(order, message):
+    data = json.dumps({
+        "order_id": order["order_id"],
+        "report_ts": str(datetime.datetime.now()),
+        "message": message
+    })
+    report_producer.produce("orders-reports", key=order["order_id"], data=data)
 
 
 def accept_order(order):
@@ -13,13 +24,15 @@ def accept_order(order):
     print("Order paid and accepted: {}".format(order))
     # save to database
     data = json.dumps(order)
-    producer.produce("accepted-orders", order["order_id"], data)
+    order_producer.produce("accepted-orders", order["order_id"], data)
+    report_order(order, "Order accepted")
 
 
 def cancel_order(order):
     order["status"] = OrderStatus.Cancelled.value
     print("Order payment failed and cancelled: {}".format(order))
     # save to database
+    report_order(order, "Order payment failed, so order did not accepted")
 
 
 def pay_order(order) -> bool:
@@ -42,4 +55,4 @@ def msg_process(msg):
             cancel_order(order)
 
 
-consumer.start_consumer(["validated-orders"], msg_process)
+order_consumer.start_consumer(["validated-orders"], msg_process)
