@@ -1,4 +1,3 @@
-import datetime
 import json
 import random
 import string
@@ -6,19 +5,11 @@ import time
 from typing import Any
 
 from microservices.infrastructure.kafka_producer import KafkaProducer
+from microservices.ordering.report_creator import report_order
 from microservices.models.order import Order
 
 order_producer = KafkaProducer("order_process")
 report_producer = KafkaProducer("report_process")
-
-
-def report_order(order, message):
-    data = json.dumps({
-        "order_id": order["order_id"],
-        "report_ts": str(datetime.datetime.now()),
-        "message": message
-    })
-    report_producer.produce("orders-reports", key=order["order_id"], data=data)
 
 
 def order_acked(err: Any, msg: Any):
