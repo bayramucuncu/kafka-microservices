@@ -37,3 +37,13 @@ class Order:
 
     def to_json(self):
         return self.__str__()
+
+
+class OrderReport:
+    order_id: uuid
+    status: OrderStatus
+    created_ts: datetime
+    report_message: str
+
+    def __str__(self):
+        return json.dumps(self.__dict__)

@@ -5,11 +5,19 @@ from confluent_kafka import Consumer, KafkaError, KafkaException
 
 
 class KafkaConsumer:
+    consumer_configuration = {
+        'bootstrap.servers': "localhost:9092,localhost:9093",
+        'auto.offset.reset': 'smallest'
+    }
 
-    def __init__(self, config):
-        self.config = config
-        self.consumer = Consumer(config)
+    def __init__(self, group_id):
+        self.consumer_configuration["group.id"] = group_id
+        self.consumer = Consumer(self.consumer_configuration)
         self.running = True
+
+    @staticmethod
+    def json_serializer(message):
+        return json.dumps(message).encode('utf-8')
 
     def start_consumer(self, topics, callback=None):
         try:

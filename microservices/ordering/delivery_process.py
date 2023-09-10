@@ -4,18 +4,8 @@ from microservices.infrastructure.kafka_consumer import KafkaConsumer
 from microservices.infrastructure.kafka_producer import KafkaProducer
 from microservices.models.order import OrderStatus
 
-consumer_conf = {
-    'bootstrap.servers': "localhost:9092,localhost:9093",
-    'group.id': "consume-accepted-accepted-for-delivery",
-    'auto.offset.reset': 'smallest'
-}
-consumer = KafkaConsumer(consumer_conf)
-
-producer_config = {
-    'bootstrap.servers': "localhost:9092,localhost:9093",
-    'client.id': "delivery_process"
-}
-producer = KafkaProducer(producer_config)
+consumer = KafkaConsumer("consume-accepted-accepted-for-delivery")
+producer = KafkaProducer("delivery_process")
 
 
 def start_order_delivery(order):

@@ -4,19 +4,8 @@ from microservices.infrastructure.kafka_consumer import KafkaConsumer
 from microservices.infrastructure.kafka_producer import KafkaProducer
 from microservices.models.order import OrderStatus
 
-
-consumer_conf = {
-    'bootstrap.servers': "localhost:9092,localhost:9093",
-    'group.id': "consume-submitted-orders-for-inventory",
-    'auto.offset.reset': 'smallest'
-}
-consumer = KafkaConsumer(consumer_conf)
-
-producer_config = {
-    'bootstrap.servers': "localhost:9092,localhost:9093",
-    'client.id': "inventory_process"
-}
-producer = KafkaProducer(producer_config)
+consumer = KafkaConsumer("consume_submitted_orders_for_inventory")
+producer = KafkaProducer("inventory_process")
 
 
 def msg_process(msg):

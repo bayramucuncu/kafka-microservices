@@ -1,13 +1,23 @@
 import json
+import uuid
 
 from confluent_kafka import Producer
 
 
 class KafkaProducer:
 
-    def __init__(self, config):
-        self.config = config
-        self.producer = Producer(config)
+    producer_config = {
+        'bootstrap.servers': "localhost:9092,localhost:9093",
+        'client.id': str(uuid.uuid4())
+    }
+
+    def __init__(self, client_id=None):
+        self.producer_config["client.id"] = client_id
+        self.producer = Producer(self.producer_config)
+
+    @staticmethod
+    def json_serializer(message):
+        return json.dumps(message).encode('utf-8')
 
     @staticmethod
     def acked(err, msg):
