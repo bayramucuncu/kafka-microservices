@@ -1,10 +1,15 @@
 import json
 import uuid
+from typing import Any
 
 from confluent_kafka import Producer
 
 
 class KafkaProducer:
+
+    @staticmethod
+    def json_serializer(message):
+        return json.dumps(message).encode('utf-8')
 
     producer_config = {
         'bootstrap.servers': "localhost:9092,localhost:9093",
@@ -16,11 +21,7 @@ class KafkaProducer:
         self.producer = Producer(self.producer_config)
 
     @staticmethod
-    def json_serializer(message):
-        return json.dumps(message).encode('utf-8')
-
-    @staticmethod
-    def acked(err, msg):
+    def acked(err: Any, msg: Any):
         if err is not None:
             print("Failed to deliver message: %s: %s" % (str(msg), str(err)))
         else:

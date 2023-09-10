@@ -7,7 +7,7 @@ from confluent_kafka import Consumer, KafkaError, KafkaException
 class KafkaConsumer:
     consumer_configuration = {
         'bootstrap.servers': "localhost:9092,localhost:9093",
-        'auto.offset.reset': 'smallest'
+        'auto.offset.reset': 'latest'
     }
 
     def __init__(self, group_id):

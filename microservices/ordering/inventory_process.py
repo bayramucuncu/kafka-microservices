@@ -4,7 +4,7 @@ from microservices.infrastructure.kafka_consumer import KafkaConsumer
 from microservices.infrastructure.kafka_producer import KafkaProducer
 from microservices.models.order import OrderStatus
 
-consumer = KafkaConsumer("consume_submitted_orders_for_inventory")
+consumer = KafkaConsumer("cg_submitted_orders_1")
 producer = KafkaProducer("inventory_process")
 
 
